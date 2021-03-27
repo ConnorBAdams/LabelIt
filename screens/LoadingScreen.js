@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 
-// THIS IS A SCEEN BOILERPLATE
+// This is a basic loading screen
 
 const Screen = ({ navigation }) => {
 	return (<View style={styles.container}>
-
-        
-    </View>);
+		<ActivityIndicator size="large" color="#2fcc76" />
+		<Text>Loading...</Text>
+	</View>);
 };
 
 const styles = StyleSheet.create({

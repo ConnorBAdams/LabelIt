@@ -7,17 +7,10 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from '@expo/vector-icons'; 
 
 //#region Screen Imports
-import LandingPageScreen from '../screens/LandingPageScreen';
-import ProfileScreen from '../screens/ProfileScreen';
+import LandingPageScreen from '../screens/LandingScreen';
+import AuthScreen from '../screens/AuthScreen';
 import HomeScreen from '../screens/HomeScreen';
-import ProjectScreen from '../screens/ProjectScreen';
-import CreateProjectScreen from '../screens/CreateProjectScreen';
-import LoadingScreen from '../screens/LoadingScreen'
-import MakerAccCreateScreen from '../screens/MakerAccCreateScreen'
-import BuyerAccCreateScreen from '../screens/BuyerAccCreateScreen'
-import SignInScreen from '../screens/SignInScreen'
-import GigScreen from "../screens/GigScreen";
-import FindGigScreen from "../screens/FindGigScreen";
+import LoadingScreen from '../screens/LoadingScreen';
 //#endregion
 
 /*
@@ -34,6 +27,7 @@ Their respective implementation can be returned from this component
 const Tab = createBottomTabNavigator();
 export default AppNavigator = () => {
     const [loggedIn, setLoggedIn] = useState(-1)
+
     firebase.auth().onAuthStateChanged(function (user) {
         if (user) {
             setLoggedIn(1)
@@ -86,10 +80,10 @@ export default AppNavigator = () => {
                 ),
                 }}
             />
-            <Tab.Screen name="My Gigs"
+            <Tab.Screen name="Label New Data"
             component={GigNavigator}
             options={{
-                tabBarLabel: 'Gigs',
+                tabBarLabel: 'Label',
                 tabBarIcon: ({ color, size }) => (
                     <FontAwesome5 name="hammer" color={color} size={size} />
                 ),
@@ -114,9 +108,7 @@ const LoginNavigator = () => {
     return (
         <LoginStack.Navigator>
             <LoginStack.Screen name="LandingPage" options={{headerShown: false}} component={LandingPageScreen} />
-            <LoginStack.Screen name="MakerCreateScreen" options={{headerShown: false}} component={MakerAccCreateScreen} />
-            <LoginStack.Screen name="BuyerCreateScreen" options={{headerShown: false}} component={BuyerAccCreateScreen} />
-            <LoginStack.Screen name="SignInScreen" options={{headerShown: false}} component={SignInScreen} />
+            <LoginStack.Screen name="AuthScreen" options={{headerShown: false}} component={AuthScreen} />
         </LoginStack.Navigator>
     );
 };
@@ -127,8 +119,6 @@ const HomeNavigator = () => {
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen name="Home" options={{headerShown: false}} component={HomeScreen} />
-            <HomeStack.Screen name="ProjectScreen" component={ProjectScreen} />
-            <HomeStack.Screen name="CreateProjectScreen" component={CreateProjectScreen} />
         </HomeStack.Navigator>
     );
 };
@@ -137,9 +127,7 @@ const LabelStack = createStackNavigator();
 const LabelNavigator = () => {
     return (
         <LabelStack.Navigator>
-            <LabelStack.Screen name="Home" options={{headerShown: false}} component={GigScreen} />
-            <LabelStack.Screen name="ProjectScreen" component={ProjectScreen} />
-            <LabelStack.Screen name="FindGigScreen" component={FindGigScreen} />
+            {/* <LabelStack.Screen name="Home" options={{headerShown: false}} component={GigScreen} /> */}
         </LabelStack.Navigator>
     );
 };
@@ -149,9 +137,9 @@ const ProfileStack = createStackNavigator();
 const ProfileNavigator = () => {
     return (
         <ProfileStack.Navigator>
-            <ProfileStack.Screen name="ProfileScreen"
+            {/* <ProfileStack.Screen name="ProfileScreen"
              component={ProfileScreen} 
-             options={{ headerShown: false }} />
+             options={{ headerShown: false }} /> */}
             </ProfileStack.Navigator>
     );
 };
