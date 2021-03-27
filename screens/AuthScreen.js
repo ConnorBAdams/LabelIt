@@ -8,7 +8,6 @@ import { Input } from "react-native-elements";
 import firebase, { auth } from "firebase";
 import "firebase/firestore";
 
-
 // this screen is used to create accounts or log in the user
 
 const Screen = ({ route, navigation }) => {
@@ -20,9 +19,9 @@ const Screen = ({ route, navigation }) => {
     const { mode } = route.params;
 
     const submitData = async () => {
-		if (email == null || pass == null || confpass == null || name == null) {
+		if (email == null || pass == null || mode=='create' && confpass == null || mode=='create' && name == null) {
 			ToastAndroid.show('Form is incomplete, please review it!', ToastAndroid.SHORT)
-		} else if (pass != confpass) {
+		} else if (pass != confpass && mode=='create') {
 			ToastAndroid.show('Passwords don\'t match, plase check them!', ToastAndroid.SHORT)
 		} else {
 			if (mode == 'create') {
@@ -49,8 +48,9 @@ const Screen = ({ route, navigation }) => {
 				}
 			}
 			else if (mode == 'signin') {
+				console.log("SIGN IN")
 				let response = await auth()
-				.createUserWithEmailAndPassword(email, pass)
+				.signInWithEmailAndPassword(email, pass)
 			}
 		}
 	};
@@ -113,6 +113,7 @@ const Screen = ({ route, navigation }) => {
                             type: "MaterialIcons",
                             name: "email",
                         }}
+						onChangeText={(text) => setEmail(text)}
                     />
                     <Input
                         label="Password"
@@ -122,6 +123,7 @@ const Screen = ({ route, navigation }) => {
                             type: "font-awesome",
                             name: "lock",
                         }}
+						onChangeText={(text) => setPass(text)}
                     />
                 </View>
             )}

@@ -11,6 +11,10 @@ import LandingPageScreen from '../screens/LandingScreen';
 import AuthScreen from '../screens/AuthScreen';
 import HomeScreen from '../screens/HomeScreen';
 import LoadingScreen from '../screens/LoadingScreen';
+import LabelDataScreen from '../screens/LabelDataScreen';
+import LabelEditorScreen from '../screens/LabelEditorScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import PictureScreen from '../screens/PictureScreen';
 //#endregion
 
 /*
@@ -74,18 +78,18 @@ export default AppNavigator = () => {
             <Tab.Screen name="Home Screen"
             component={HomeNavigator}
             options={{
-                tabBarLabel: 'Projects',
+                tabBarLabel: 'My Labels',
                 tabBarIcon: ({ color, size }) => (
                     <FontAwesome5 name="clipboard-list" color={color} size={size} />
                 ),
                 }}
             />
             <Tab.Screen name="Label New Data"
-            component={GigNavigator}
+            component={LabelNavigator}
             options={{
-                tabBarLabel: 'Label',
+                tabBarLabel: 'Label Data',
                 tabBarIcon: ({ color, size }) => (
-                    <FontAwesome5 name="hammer" color={color} size={size} />
+                    <MaterialCommunityIcons name="format-textbox" color={color} size={size} />
                 ),
                 }}
             />
@@ -127,7 +131,9 @@ const LabelStack = createStackNavigator();
 const LabelNavigator = () => {
     return (
         <LabelStack.Navigator>
-            {/* <LabelStack.Screen name="Home" options={{headerShown: false}} component={GigScreen} /> */}
+            <LabelStack.Screen name="Home" options={{headerShown: false}} component={LabelDataScreen} />
+            <LabelStack.Screen name="LabelEditor" options={{headerShown: false}} component={LabelEditorScreen} />
+            <LabelStack.Screen name="PictureScreen" options={{headerShown: false}} component={PictureScreen} />
         </LabelStack.Navigator>
     );
 };
@@ -140,6 +146,7 @@ const ProfileNavigator = () => {
             {/* <ProfileStack.Screen name="ProfileScreen"
              component={ProfileScreen} 
              options={{ headerShown: false }} /> */}
+             <ProfileStack.Screen name="ProfileScreen" component={ProfileScreen} options={{ headerShown: false }}  />
             </ProfileStack.Navigator>
     );
 };

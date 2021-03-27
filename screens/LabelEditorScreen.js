@@ -1,10 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-// This is the basic home screen
+// This screen is where the user actually labesl the image
 
-const HomeScreen = ({ navigation }) => {
-	return <View style={styles.container}></View>;
+const LabelEditorScreen = ({ navigation }) => {
+	return (<View style={styles.container}>
+
+        
+    </View>);
 };
 
 const styles = StyleSheet.create({
@@ -16,4 +19,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default HomeScreen;
+export default LabelEditorScreen;
