@@ -121,11 +121,11 @@ const CameraModule = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: "100%",
-        backgroundColor: "#fff",
+        backgroundColor: "black",
         alignItems: "center",
     },
     camera: {
-        width: "100%",
+        height: "100%",
 		aspectRatio: 9/16,
     },
     cameraInternalTop: {
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     },
     cameraInternalBottom: {
 		position: 'absolute',
-		bottom: 20,
+		bottom: 10,
 		width: '100%',
         flexDirection: "row",
         backgroundColor: "transparent",

@@ -132,8 +132,8 @@ const LabelNavigator = () => {
     return (
         <LabelStack.Navigator>
             <LabelStack.Screen name="Home" options={{headerShown: false}} component={LabelDataScreen} />
-            <LabelStack.Screen name="LabelEditor" options={{headerShown: false}} component={LabelEditorScreen} />
-            <LabelStack.Screen name="PictureScreen" options={{headerShown: false}} component={PictureScreen} />
+            <LabelStack.Screen name="LabelEditor" options={{title:"Label Editor"}} component={LabelEditorScreen} />
+            <LabelStack.Screen name="PictureScreen" options={{title:"Take Picture"}} component={PictureScreen} />
         </LabelStack.Navigator>
     );
 };

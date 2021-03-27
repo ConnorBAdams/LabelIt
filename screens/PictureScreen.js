@@ -8,7 +8,7 @@ const PictureScreen = ({ navigation }) => {
 	return (
 	<View style={styles.container}>
 		<View style={{height:"100%"}}>
-		<CameraModule />
+		<CameraModule photoHandler={(img) => navigation.navigate('LabelEditor', {imageURI: img.uri})} />
         </View>
     </View>
 	);

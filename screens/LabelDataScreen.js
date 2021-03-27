@@ -22,7 +22,7 @@ const LabelDataScreen = ({ navigation }) => {
 	
 		if (!result.cancelled) {
 		  setImage(result.uri);
-		  navigation.navigate('LabelEditor', {imageURI: image} )
+		  navigation.navigate('LabelEditor', {imageURI: result.uri} )
 		}
 	  };
 	
