@@ -78,7 +78,7 @@ export default AppNavigator = () => {
             <Tab.Screen name="Home Screen"
             component={HomeNavigator}
             options={{
-                tabBarLabel: 'My Labels',
+                tabBarLabel: 'My Data',
                 tabBarIcon: ({ color, size }) => (
                     <FontAwesome5 name="clipboard-list" color={color} size={size} />
                 ),

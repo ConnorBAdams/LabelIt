@@ -39,7 +39,7 @@ const Screen = ({ route, navigation }) => {
 							createdAt: Date.now(),
 							lastLoggedIn: Date.now(),
 							profilePic: "",
-							aboutMe: "",
+							teamID: ""
 						});
 					}
 				} catch (e) {
