@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal, Dimensions, Alert } from "react-native";
+import { StyleSheet, Text, View, Modal, Dimensions, Alert, ImageBackground } from "react-native";
 import Button from "../components/Button";
 import firebase, { auth } from "firebase";
 import "firebase/firestore";
@@ -194,7 +194,7 @@ const ProfileScreen = ({ navigation }) => {
 
 	if (userInfo != null)
 	return (
-        <View style={styles.container}>
+        <ImageBackground style={styles.container} source={require('../assets/bgTest5.png')}>
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -325,7 +325,7 @@ const ProfileScreen = ({ navigation }) => {
                     </View>
                 )}
                 {userInfo.teamID != "" && (
-                    <View>
+                    <View style={styles.teamCard}>
 						<Text style={[material.headline, { marginTop: 15 }]}>
 							Team: {(teamInfo != null ? teamInfo.name : '')}
 						</Text>
@@ -336,7 +336,7 @@ const ProfileScreen = ({ navigation }) => {
                             If you want to leave your team:
                         </Text>
                         <View
-                            style={{ alignItems: "center", marginBottom: 45 }}
+                            style={{ alignItems: "center", marginBottom: 15 }}
                         >
                             <Button
                                 title="Leave Team"
@@ -352,8 +352,7 @@ const ProfileScreen = ({ navigation }) => {
                 <View
                     style={{
                         alignItems: "center",
-                        borderTopColor: "lightgrey",
-                        borderTopWidth: 1,
+						marginTop: 20
                     }}
                 >
                     <Button
@@ -367,7 +366,7 @@ const ProfileScreen = ({ navigation }) => {
                 </View>
             </View>
 			
-        </View>
+        </ImageBackground>
     );
 	// Haven't gotten firestore info yet
 	else return (
@@ -441,6 +440,13 @@ const styles = StyleSheet.create({
         height: 50,
         marginHorizontal: 20,
     },
+	teamCard: {
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 10,
+		elevation: 5,
+		zIndex: 1
+	}
 });
 
 export default ProfileScreen;

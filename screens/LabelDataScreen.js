@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
 import { material } from 'react-native-typography'
 import { Divider } from 'react-native-elements';
 import Button from "../components/Button";
@@ -27,7 +27,7 @@ const LabelDataScreen = ({ navigation }) => {
 	  };
 	
 	return (
-	<View style={styles.container}>
+	<ImageBackground style={styles.container} source={require('../assets/bgTest3.png')}>
 		<View style={styles.headerContainer}>
 		<Text style={[material.headline, {marginBottom: '25%'}]}>LABEL NEW DATA</Text>
 		</View>
@@ -36,12 +36,12 @@ const LabelDataScreen = ({ navigation }) => {
 			<Text style={material.subheading}>Take a picture of something</Text>
 			<Button title="Take picture" onPress={() => {navigation.navigate('PictureScreen')}} />
 		</View>
-		<View style={{marginBottom: '15%', alignContent: 'center',alignItems: 'center'}}>
+		<View style={{alignContent: 'center',alignItems: 'center'}}>
 			<Text style={material.subheading}>Upload an image you already have</Text>
 			<Button title="Upload from file" onPress={() => pickImage()} />
 		</View>
 		</View>
-    </View>
+    </ImageBackground>
 	);
 };
 
@@ -55,11 +55,17 @@ const styles = StyleSheet.create({
 	headerContainer: {
 		height: '10%',
 		alignItems: 'center',
-		width: '100%'
+		width: '100%',
+		marginBottom: '20%'
 	},
 	buttonList: {
-		height: '75%',
-		justifyContent: 'center'
+		height: '45%',
+		justifyContent: 'center',
+		backgroundColor: 'white',
+		borderRadius: 20,
+		elevation: 5,
+		zIndex: 1,
+		padding: 10
 	}
 });
 

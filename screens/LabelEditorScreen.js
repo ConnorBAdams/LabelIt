@@ -198,7 +198,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 	  }
 
     return (
-	<ImageBackground  style={styles.container} source={require('../assets/bgTest2.png')}>
+	<ImageBackground  style={styles.container} source={(uriOnly) ? require('../assets/bgTest4.png') : require('../assets/bgTest2.png')}>
 	<View style={styles.centeredView}>
       <Modal
         animationType="slide"
@@ -336,8 +336,8 @@ const LabelEditorScreen = ({ route, navigation }) => {
 		}
 		</View>}
 		{ !uriOnly &&
-		<View style={{justifyContent: 'flex-start'}}>
-			<Text style={material.headline}>Comments:</Text>
+		<View style={{justifyContent: 'flex-start', marginBottom: 50}}>
+			<Text style={[material.headline, {marginBottom: 30, marginLeft: 15}]}>Comments:</Text>
 			<View style={styles.commentBox}>
 				{ comments != undefined &&  comments.length > 0 && comments.map(comment => {
 					console.log(comment)
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
 		marginHorizontal: Dimensions.get('window').width * 0.05,
 		padding: 20,
 		borderRadius: 20,
-		borderColor: 'lightgrey'
+		borderColor: 'lightgrey',
 	},
 	bgimage: {
         flex: 1,

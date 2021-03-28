@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, ActivityIndicator, Image, Dimensions, ImageBackground  } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, Image, Dimensions, ImageBackground } from "react-native";
 import { material } from 'react-native-typography'
 import { useFocusEffect } from "@react-navigation/native";
 import firebase, { auth } from "firebase";
@@ -158,11 +158,9 @@ const HomeScreen = ({ navigation }) => {
 		}
 		console.log('rendering: ', item.id, item.uri)
 		return (
-			<View style={styles.renderItem}>
-				<TouchableOpacity onPress={() => tapEvent()}>
-					<Image source={{uri: item.uri}} style={styles.renderItemImage} />
-				</TouchableOpacity>
-			</View>
+			<TouchableOpacity onPress={() => tapEvent()} style={styles.renderItem}>
+				<Image source={{uri: item.uri}} style={styles.renderItemImage} />
+			</TouchableOpacity>
 		)
 	}
 	
@@ -250,26 +248,39 @@ const styles = StyleSheet.create({
 		marginHorizontal: '4%',
 		marginVertical: '2.5%',
 		elevation: 5,
-		zIndex: 1
+		zIndex: 1,
+		backgroundColor: 'rgba(125, 125, 125, 0.5)', 
+		borderRadius: 20,
+		borderColor:'white',
+		borderWidth: 0,
 	},
 	renderItemImage: {
-		backgroundColor: 'rgba(125, 125, 125, 0.5)', 
 		width: '100%', 
 		aspectRatio: 1,
 		borderRadius: 20,
-		borderColor:'white',
-		borderWidth: 1
-	},
-	groupDataContainer: {
-		height: Dimensions.get('window').height * 0.4,
 	},
 	userDataContainer: {
 		height: Dimensions.get('window').height * 0.4,
+		marginTop: '10%',
+		backgroundColor: 'white',
+		borderRadius: 20,
+		elevation: 5,
+		width: '95%',
+		padding: 5
 	},
+	groupDataContainer: {
+		height: Dimensions.get('window').height * 0.4,
+		marginTop: '5%',
+		backgroundColor: 'white',
+		borderRadius: 20,
+		elevation: 5,
+		width: '95%',
+		padding: 5
+		},
 	bgimage: {
 		flex: 1,
 		resizeMode: "cover",
-		justifyContent: 'space-evenly',
+		alignItems: 'center',
 		height: '100%'
 	  },
 });
