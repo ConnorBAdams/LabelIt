@@ -2,7 +2,9 @@
 
 ### https://reactnavigation.org/docs/params/
 ### https://docs.expo.io/versions/latest/sdk/imagepicker/
-### https://docs.expo.io/versions/latest/sdk/camera/
+### https://docs.expo.io/versions/latest/sdk/camera/ 
+### https://www.freecodecamp.org/news/how-to-create-a-camera-app-with-expo-and-react-native/
+    -- Cameras are a pain
 ### https://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array
 ### https://github.com/react-native-svg/react-native-svg
     -- That one was used for a LOT of SVG code

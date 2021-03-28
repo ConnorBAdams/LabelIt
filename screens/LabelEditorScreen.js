@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal, Dimensions, FlatList } from "react-native";
+import { StyleSheet, Text, View, Modal, Dimensions, FlatList, ScrollView } from "react-native";
 import Button from "../components/Button";
 import Svg, { Circle, Rect, SvgUri, Image, Polygon, Text as SVGText } from "react-native-svg";
 import { material } from 'react-native-typography'
 import { Input } from "react-native-elements";
 import firebase, { auth } from "firebase";
 import "firebase/firestore";
+import { useFocusEffect } from "@react-navigation/native";
 
 // This screen is where the user actually labesl the image
 
@@ -16,9 +17,22 @@ const LabelEditorScreen = ({ route, navigation }) => {
 	const [wipLabel, setWIPLabel] = useState('');
 	const [modalVisible, setModalVisible] = useState(false);
 	const [savedLabels, setSavedLabels] = useState([]);
+	const [canEdit, setCanEdit] = useState(true)
 
     const { imageURI, uriOnly } = route.params;
 	console.log(imageURI)
+
+	useFocusEffect(
+		React.useCallback(() => {
+			if (!uriOnly) {
+				setSavedLabels(imageURI.labels)
+				setCanEdit(imageURI.userOwned)
+			}
+			return () => {
+				console.log("Focused Profile Screen");
+			};
+		}, [])
+	);
 
 	// Upload the image to firebase then add the item to firestore	
 	const uploadToBackend = () => {
@@ -90,7 +104,11 @@ const LabelEditorScreen = ({ route, navigation }) => {
 
     const handleBoundingBox = (e) => {
         console.log("touchMove", e.nativeEvent);
-        console.log();
+        if (!canEdit) {
+			console.log('User can\'t edit' )
+			return
+		}
+
         if (mode == 0) {
             console.log("in rect selection mode");
 
@@ -183,7 +201,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 			width="100%"
 			height="100%"
 			style={{backgroundColor: 'grey'}}
-			href={{uri: imageURI}}
+			href={(uriOnly) ? {uri: imageURI} : {uri: imageURI.uri}}
 		/>
 			{mode == 0 &&
 				<Rect 
@@ -244,21 +262,28 @@ const LabelEditorScreen = ({ route, navigation }) => {
 			}
       		</Svg> 
     </View>
-	<View>
-		<Text style={material.subheading}>Selection mode: {(mode == 0) ? "Rectangle" : "Polygon"}</Text>
-	</View>
+	
+	<ScrollView style={{width: '100%'}}>
+		
+		{ canEdit && 
+		<View style={styles.scrollInner}>
+		<View>
+			<Text style={material.subheading}>Selection mode: {(mode == 0) ? "Rectangle" : "Polygon"}</Text>
+		</View>
       	<Button onPress={() => {mode == 0 ? setMode(1) : setMode(0)}} title='TOGGLE selection mode' />
-		{pos.length > 0 &&
+		{ pos.length > 0 &&
 		<View style={{flexDirection:'row', width: '100%', justifyContent: 'space-around', marginTop: 10}}>
-		<Button onPress={() => setPos([])} title='RESET' iconName="trash"  buttonStyle={{backgroundColor: '#cc412f'}} />
-		<Button onPress={() => setModalVisible(true)} title='Done!' iconName="check" />
+			<Button onPress={() => setPos([])} title='RESET' iconName="trash"  buttonStyle={{backgroundColor: '#cc412f'}} />
+			<Button onPress={() => setModalVisible(true)} title='Done!' iconName="check" />
 		</View>
 		}
-		{pos.length == 0 &&
+		{ pos.length == 0 &&
 		<View style={{flexDirection:'row', width: '100%', justifyContent: 'space-around', marginTop: 10}}>
-		<Button onPress={() => uploadToBackend()} title='Upload!' iconName="check" />
+			<Button onPress={() => uploadToBackend()} title='Upload!' iconName="check" />
 		</View>
 		}
+		</View>}
+	</ScrollView>
     </View>
 	);
 };
@@ -308,6 +333,10 @@ const styles = StyleSheet.create({
         height: 50,
         marginHorizontal: 20,
     },
+	scrollInner: {
+		justifyContent: 'center',
+		alignItems: 'center'
+	}
 });
 
 export default LabelEditorScreen;
