@@ -33,7 +33,7 @@ const LabelDataScreen = ({ navigation }) => {
 		</View>
         <View style={styles.buttonList}>
 		<View style={{marginBottom: '15%', alignContent: 'center',alignItems: 'center'}}>
-			<Text style={material.subheading}>Take a picture of the world</Text>
+			<Text style={material.subheading}>Take a picture of something</Text>
 			<Button title="Take picture" onPress={() => {navigation.navigate('PictureScreen')}} />
 		</View>
 		<View style={{marginBottom: '15%', alignContent: 'center',alignItems: 'center'}}>
@@ -55,8 +55,6 @@ const styles = StyleSheet.create({
 	headerContainer: {
 		height: '10%',
 		alignItems: 'center',
-		borderBottomColor: 'black',
-		borderBottomWidth: 1,
 		width: '100%'
 	},
 	buttonList: {
