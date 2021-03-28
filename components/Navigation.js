@@ -74,7 +74,30 @@ export default AppNavigator = () => {
         )
     } else { // Logged in
         return (
-            <Tab.Navigator initialRouteName="Home">
+            <Tab.Navigator initialRouteName="Home"            
+                tabBarOptions={{
+                    activeTintColor: 'black',
+                    inactiveTintColor: 'lightgray',
+                    inactiveBackgroundColor: 'rgba(125,125,125,0.25)',
+                    activeBackgroundColor: 'rgba(125,125,125,0.25)',
+                    //inactiveBackgroundColor: 'transparent',
+                    style: {
+                        position: 'absolute',
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        backgroundColor: 'transparent',
+                        elevation: 0,
+                        borderRadius: 15,
+                        height: 55,
+                        borderTopColor: 'white',
+                        borderRightWidth: 1,
+                        borderRightColor: 'white',
+                        borderLeftWidth: 1,
+                        borderLeftColor: 'white',
+                    }   
+                }
+            }>
             <Tab.Screen name="Home Screen"
             component={HomeNavigator}
             options={{
@@ -123,7 +146,7 @@ const HomeNavigator = () => {
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen name="Home" options={{headerShown: false}} component={HomeScreen} />
-            <HomeStack.Screen name="LabelEditor" options={{title:"Label Editor"}} component={LabelEditorScreen} />
+            <HomeStack.Screen name="LabelEditor"  options={{title:"Label Editor", headerStyle: {backgroundColor: 'transparent', elevation: 0 },}} component={LabelEditorScreen} />
         </HomeStack.Navigator>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, ActivityIndicator, Image, Dimensions } from "react-native";
+import { StyleSheet, Text, View, ActivityIndicator, Image, Dimensions, ImageBackground  } from "react-native";
 import { material } from 'react-native-typography'
 import { useFocusEffect } from "@react-navigation/native";
 import firebase, { auth } from "firebase";
@@ -169,8 +169,9 @@ const HomeScreen = ({ navigation }) => {
 
 	return (
 	<View style={styles.container}>
-		<Text style={[material.headline, {marginLeft: 10}]}>Your Labeled Data:</Text>
-		<View>
+		<ImageBackground style={styles.bgimage} source={require('../assets/bgTest.png')}>
+		<View style={styles.userDataContainer}>
+		<Text style={[material.headline, {marginLeft: 10, marginBottom: 30}]}>Your Labeled Data:</Text>
 			{ (userData != null && userUploads != null) &&
 				<View>
 					<FlatList
@@ -192,8 +193,8 @@ const HomeScreen = ({ navigation }) => {
 				</View>
 			}
 		</View>
-		<Text style={[material.headline, {marginLeft: 10}]}>Your Group's Data:</Text>
-		<View>
+		<View style={styles.groupDataContainer}>
+		<Text style={[material.headline, {marginLeft: 10, marginBottom: 30}]}>Your Group's Data:</Text>
 			{ (groupData != null && groupUploads != null && groupData != -1 ) &&
 				<View>
 					{ groupUploads.length == 0 &&
@@ -228,6 +229,7 @@ const HomeScreen = ({ navigation }) => {
 				</View>
 			}
 		</View>
+		</ImageBackground>
 	</View>
 	);
 };
@@ -236,11 +238,11 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",
-		justifyContent: "space-around",
+		justifyContent: 'space-evenly',
 	},
 	loadingView: {
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
 	},
 	renderItem: {
 		width: Dimensions.get('window').width * 0.25, 
@@ -255,8 +257,21 @@ const styles = StyleSheet.create({
 		width: '100%', 
 		aspectRatio: 1,
 		borderRadius: 20,
-
-	}
+		borderColor:'white',
+		borderWidth: 1
+	},
+	groupDataContainer: {
+		height: Dimensions.get('window').height * 0.4,
+	},
+	userDataContainer: {
+		height: Dimensions.get('window').height * 0.4,
+	},
+	bgimage: {
+		flex: 1,
+		resizeMode: "cover",
+		justifyContent: 'space-evenly',
+		height: '100%'
+	  },
 });
 
 export default HomeScreen;

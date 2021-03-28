@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal, Dimensions, FlatList, ScrollView, Alert } from "react-native";
+import { StyleSheet, Text, View, Modal, Dimensions, FlatList, ScrollView, Alert, ImageBackground } from "react-native";
 import Button from "../components/Button";
 import Svg, { Circle, Rect, SvgUri, Image, Polygon, Text as SVGText } from "react-native-svg";
 import { material } from 'react-native-typography'
@@ -198,7 +198,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 	  }
 
     return (
-	<View style={styles.container}>
+	<ImageBackground  style={styles.container} source={require('../assets/bgTest2.png')}>
 	<View style={styles.centeredView}>
       <Modal
         animationType="slide"
@@ -243,7 +243,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
       </Modal>
 
     </View>
-    <View onTouchStart={(e) => handleBoundingBox(e)} style={{width: '100%', height: '70%', borderColor: 'black', borderWidth: 1, borderRadius: 20}} >
+    <View onTouchStart={(e) => handleBoundingBox(e)} style={{width: '100%', height: '70%', borderColor: 'black', borderWidth: 1, borderRadius: 20, marginTop: -20}} >
       <Svg height="100%" width="100%" viewbox="0 0 100 100">
 		<Image
 			onLayout={event => {console.log('OnLayout: ', event.nativeEvent.layout);  setLayout(event.nativeEvent.layout)}}
@@ -268,14 +268,15 @@ const LabelEditorScreen = ({ route, navigation }) => {
 				strokeWidth="2"
 				/>
 			}
-			{savedLabels.map((value) => {
+			{layout != 0 &&
+			savedLabels.map((value) => {
 				if (value.type == 0) {
 					console.log(value)
+					console.log(value.pos[0], layout.x)
 					return(
 						<View>
 					<Rect 
 					onLongPress={(e) => {console.log('Long press'); deleteLabel(value) }}
-					onPress={(e) => {console.log('press', e.nativeEvent)}}
 					x={`${value.pos[0].x + layout.x}`}
 					y={`${value.pos[0].y + layout.y}`} 
 					width={`${value.pos[1].x - value.pos[0].x}`} 
@@ -364,7 +365,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 			</View>
 		}
 	</ScrollView>
-    </View>
+	</ImageBackground>
 	);
 };
 
@@ -424,7 +425,12 @@ const styles = StyleSheet.create({
 		padding: 20,
 		borderRadius: 20,
 		borderColor: 'lightgrey'
-	}
+	},
+	bgimage: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+	  },
 });
 
 export default LabelEditorScreen;
