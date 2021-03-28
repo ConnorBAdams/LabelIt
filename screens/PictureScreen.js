@@ -7,7 +7,7 @@ import CameraModule from '../components/CameraModule'
 const PictureScreen = ({ navigation }) => {
 	return (
 	<View style={styles.container}>
-		<View style={{height:"100%"}}>
+		<View style={{height:"92%"}}>
 		<CameraModule photoHandler={(img) => navigation.navigate('LabelEditor', {imageURI: img.uri, uriOnly: true})} />
         </View>
     </View>
@@ -18,8 +18,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",
-		alignItems: "center",
-		justifyContent: "center",
 	},
 });
 

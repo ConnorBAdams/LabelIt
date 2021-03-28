@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal, Dimensions, Alert, ImageBackground } from "react-native";
+import { StyleSheet, Text, View, Modal, Dimensions, Alert, ImageBackground, Animated, TouchableOpacity } from "react-native";
 import Button from "../components/Button";
 import firebase, { auth } from "firebase";
 import "firebase/firestore";
 import { useFocusEffect } from "@react-navigation/native";
 import { material } from 'react-native-typography'
 import { Avatar, Input } from 'react-native-elements';
-import { MaterialIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 // This is the profile screen
 
@@ -16,15 +17,35 @@ const ProfileScreen = ({ navigation }) => {
 	const [enteredTeamID, setEnteredTeamID] = useState('')
 	const [modalVisible, setModalVisible] = useState(false);
 
+	const slideUpValue = new Animated.Value(0)
 	useFocusEffect(
-		React.useCallback(() => {
-			GetUserData()
-			return () => {
-				console.log("Focused Profile Screen");
-			};
-		}, [])
-	);
+        React.useCallback(() => {
+            // Do something when the screen is focused
+			_start();
+			if (userInfo == null) {
+				console.log(userInfo)
+				GetUserData();
+				console.log('getting user info')
+			}
+			console.log('focused')
+            return () => {
+				console.log('unfocused')
+				slideUpValue.setValue(0)
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+        }, [])
+    );
 
+	const _start = () => {
+		return Animated.parallel([
+		  Animated.timing(slideUpValue, {
+			toValue: 1,
+			duration: 150,
+			useNativeDriver: true
+		  })
+		]).start();
+	};
 
 	// This is a WIP but I want to work on other things first
 	const pickImage = async () => {
@@ -192,9 +213,9 @@ const ProfileScreen = ({ navigation }) => {
 		setUserDataWithBackend(tempUserData, userId)
 	}
 
-	if (userInfo != null)
 	return (
-        <ImageBackground style={styles.container} source={require('../assets/bgTest5.png')}>
+		<View style={styles.container}>
+			<ImageBackground style={styles.container} source={require('../assets/bgTest5.png')}>
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -233,7 +254,7 @@ const ProfileScreen = ({ navigation }) => {
                 </Modal>
             <View style={styles.header}>
                 <View style={{ alignContent: "center", alignItems: "center" }}>
-                    {userInfo.profilePic == "" && (
+                    {userInfo!=null && userInfo.profilePic == "" && (
                         <Avatar
                             size="xlarge"
                             style={{
@@ -248,7 +269,7 @@ const ProfileScreen = ({ navigation }) => {
                             {/* <MaterialIcons name="edit" size={45} color="black" style={styles.imgEditIcon} /> */}
                         </Avatar>
                     )}
-                    {userInfo.profilePic != "" && (
+                    {userInfo!=null && userInfo.profilePic != "" && (
                         <Avatar
                             size="xlarge"
                             style={{
@@ -270,26 +291,21 @@ const ProfileScreen = ({ navigation }) => {
                         </Avatar>
                     )}
                 </View>
+				{userInfo!=null &&
                 <Text style={[material.headline, { marginTop: 15 }]}>
                     Hey, {userInfo.name}!
                 </Text>
+}
             </View>
             <View style={styles.body}>
-
-                {userInfo.teamID == "" && ( // user is not in a team
-                    <View>
-                        <Text style={[material.subheading, { marginTop: 45 }]}>
+                {userInfo!=null && userInfo.teamID == "" && ( // user is not in a team
+                    <View style={styles.noTeamCard}>
+                        <Text style={[material.subheading, { marginTop: 10 }]}>
                             You're not part of a team!
                         </Text>
                         <Text style={[material.subheading, { marginTop: 5 }]}>
                             Join a team by entering the team ID:
                         </Text>
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                            }}
-                        >
                             <Input
                                 label="Team ID"
                                 inputStyle={{ color: "black" }}
@@ -299,17 +315,14 @@ const ProfileScreen = ({ navigation }) => {
                                 }}
                                 onChangeText={(text) => setEnteredTeamID(text)}
                             />
+							<View style={{justifyContent:'center', alignItems: 'center'}}>
                             <Button
                                 iconName="check"
 								onPress={() => joinById()}
-                                buttonStyle={{
-                                    height: 50,
-                                    width: 55,
-									borderRadius: 100,
-                                    justifyContent: "center",
-                                }}
+								title="join"
+								buttonStyle={{width:"50%"}}
                             />
-                        </View>
+							</View>
                         <Text style={[material.subheading, { marginTop: 5 }]}>
                             Or create a new team:
                         </Text>
@@ -324,7 +337,7 @@ const ProfileScreen = ({ navigation }) => {
                         </View>
                     </View>
                 )}
-                {userInfo.teamID != "" && (
+                {userInfo!=null && userInfo.teamID != "" && (
                     <View style={styles.teamCard}>
 						<Text style={[material.headline, { marginTop: 15 }]}>
 							Team: {(teamInfo != null ? teamInfo.name : '')}
@@ -363,27 +376,46 @@ const ProfileScreen = ({ navigation }) => {
                             width: "50%",
                         }}
                     />
-                </View>
+                </View> 
             </View>
-			
+		{/* Navigation bar */}
+		<View style={{height: 60, position: 'absolute', bottom:0, right: 0, left: 0, flexDirection: 'row', justifyContent:'center', zIndex: 100}}>
+			<TouchableOpacity 
+			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
+			onPress={() => navigation.navigate('Home Screen')}
+			>
+			<MaterialCommunityIcons name="home" color={'white'} size={32} />
+			<Text  style={{color:'white'}}>Home</Text>
+			</TouchableOpacity>
+			<TouchableOpacity 
+			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
+			onPress={() => navigation.navigate('Label New Data')}
+			>
+			<FontAwesome5 name="clipboard-list" color={'white'} size={32} />
+			<Text  style={{color:'white'}}>Label Data</Text>
+			</TouchableOpacity>
+			<TouchableOpacity 
+			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
+			onPress={() => navigation.navigate('My Profile')}
+			>
+			<MaterialIcons name="contacts" color={'black'} size={32} />
+			<Text style={{color:'black'}}>My Profile</Text>
+			</TouchableOpacity>
+		</View>
         </ImageBackground>
+		</View>
     );
-	// Haven't gotten firestore info yet
-	else return (
-	<View style={styles.container}>
-    </View>
-	)
 };
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
 		alignItems: "center",
 		justifyContent: "center",
+		width: '100%'
 	},
 	header: {
-		height: '35%',
+		height: '30%',
 		width: '80%',
 		padding: 25,
 		alignContent:'center', 
@@ -391,8 +423,8 @@ const styles = StyleSheet.create({
 	},
 	body: {
 		height: '50%',
-		width: '80%',
-		padding: 25,
+		width: '90%',
+		paddingHorizontal: 25,
 	},
 	imgEditIcon: {
 		position: 'absolute', 
@@ -445,7 +477,15 @@ const styles = StyleSheet.create({
 		borderRadius: 20,
 		padding: 10,
 		elevation: 5,
-		zIndex: 1
+		zIndex: 1,
+		marginTop: 30
+	},
+	noTeamCard: {
+		backgroundColor: 'white',
+		borderRadius: 20,
+		padding: 10,
+		elevation: 5,
+		zIndex: 1,
 	}
 });
 

@@ -243,7 +243,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
       </Modal>
 
     </View>
-    <View onTouchStart={(e) => handleBoundingBox(e)} style={{width: '100%', height: '70%', borderColor: 'black', borderWidth: 1, borderRadius: 20, marginTop: -20}} >
+    <View onTouchStart={(e) => handleBoundingBox(e)} style={styles.mainBox} >
       <Svg height="100%" width="100%" viewbox="0 0 100 100">
 		<Image
 			onLayout={event => {console.log('OnLayout: ', event.nativeEvent.layout);  setLayout(event.nativeEvent.layout)}}
@@ -336,7 +336,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 		}
 		</View>}
 		{ !uriOnly &&
-		<View style={{justifyContent: 'flex-start', marginBottom: 50}}>
+		<View style={{justifyContent: 'flex-start', width: '90%', marginLeft:'5%', marginBottom: 75, backgroundColor: 'white', borderRadius: 20}}>
 			<Text style={[material.headline, {marginBottom: 30, marginLeft: 15}]}>Comments:</Text>
 			<View style={styles.commentBox}>
 				{ comments != undefined &&  comments.length > 0 && comments.map(comment => {
@@ -376,6 +376,16 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+	mainBox:{
+		width: '100%', 
+		height: '70%', 
+		backgroundColor:'white', 
+		elevation: 5, 
+		borderWidth: 1, 
+		borderRadius: 20, 
+		marginTop: 20, 
+		marginBottom: 0
+	},
 	centeredView: {
 		flex: 1,
 		justifyContent: 'center',
@@ -408,7 +418,7 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	  },
 	  buttonList: {
-        width: '100%',
+        width: '80%',
         flexDirection: 'column',
         justifyContent: 'space-between',
         height: 50,
@@ -416,15 +426,22 @@ const styles = StyleSheet.create({
     },
 	scrollInner: {
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		borderRadius: 20,
+		backgroundColor: 'white',
+		marginBottom: 10,
+		width: '80%',
+		marginLeft: '10%',
+		elevation: 5,
+		marginTop: 10
 	},
 	commentBox: {
 		borderWidth: 0.5,
-		width: Dimensions.get('window').width * 0.9,
-		marginHorizontal: Dimensions.get('window').width * 0.05,
+		width: '100%',
 		padding: 20,
 		borderRadius: 20,
 		borderColor: 'lightgrey',
+		
 	},
 	bgimage: {
         flex: 1,

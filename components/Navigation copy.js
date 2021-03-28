@@ -17,12 +17,18 @@ import ProfileScreen from '../screens/ProfileScreen';
 import PictureScreen from '../screens/PictureScreen';
 //#endregion
 
+/*
+This is the navigation controller
+The goal is to have the drawer navigator in here, the AppNavigator
+- This will contain all of the locations within the sidebar
+- Each of these can contain deeper navigation
+Then each page that requires a deeper navigation will have its own 
+stack navigation
+Their respective implementation can be returned from this component
+*/
 
-// So I just destroyed this, instead of using a bottom tab navigator I want to use 
-// A stack navigator and disguise it as a bottom tab navigator
-// My rationale is I want the stack navigator screen transition animations
 
-const Tab = createStackNavigator();
+const Tab = createBottomTabNavigator();
 export default AppNavigator = () => {
     const [loggedIn, setLoggedIn] = useState(-1)
 
@@ -41,7 +47,6 @@ export default AppNavigator = () => {
             <Tab.Screen name="Home Screen"
             component={LoadingScreen}
             options={{
-                headerShown: false,
                 tabBarVisible: false,
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color, size }) => (
@@ -58,7 +63,6 @@ export default AppNavigator = () => {
             <Tab.Screen name="Home Screen"
             component={LoginNavigator}
             options={{
-                headerShown: false,
                 tabBarVisible: false,
                 tabBarLabel: 'Home',
                 tabBarIcon: ({ color, size }) => (
@@ -70,11 +74,7 @@ export default AppNavigator = () => {
         )
     } else { // Logged in
         return (
-            <Tab.Navigator 
-            initialRouteName="Home"            
-            screenOptions={{
-                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
-              }}
+            <Tab.Navigator initialRouteName="Home"            
                 tabBarOptions={{
                     activeTintColor: 'black',
                     inactiveTintColor: 'lightgray',
@@ -103,7 +103,6 @@ export default AppNavigator = () => {
             component={HomeNavigator}
             options={{
                 tabBarLabel: 'My Data',
-                headerShown: false,
                 tabBarIcon: ({ color, size }) => (
                     <FontAwesome5 name="clipboard-list" color={color} size={size} />
                 ),
@@ -113,18 +112,15 @@ export default AppNavigator = () => {
             component={LabelNavigator}
             options={{
                 tabBarLabel: 'Label Data',
-                headerShown: false,
                 tabBarIcon: ({ color, size }) => (
                     <MaterialCommunityIcons name="format-textbox" color={color} size={size} />
                 ),
                 }}
             />
             <Tab.Screen name="My Profile"
-            options={{headerShown: false}}
             component={ProfileNavigator}
             options={{
                 tabBarLabel: 'My Profile',
-                headerShown: false,
                 tabBarIcon: ({ color, size }) => (
                     <MaterialIcons name="contacts" color={color} size={size} />
                 ),
@@ -171,7 +167,9 @@ const HomeNavigator = () => {
 const LabelStack = createStackNavigator();
 const LabelNavigator = () => {
     return (
-        <LabelStack.Navigator>
+        <LabelStack.Navigator screenOptions={{
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          }}>
             <LabelStack.Screen name="Home" options={{headerShown: false}} component={LabelDataScreen} />
             <LabelStack.Screen name="LabelEditor" options={{title:"Label Editor"}} component={LabelEditorScreen} />
             <LabelStack.Screen name="PictureScreen" options={{title:"Take Picture"}} component={PictureScreen} />

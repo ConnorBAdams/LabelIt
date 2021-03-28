@@ -5,6 +5,8 @@ import { useFocusEffect } from "@react-navigation/native";
 import firebase, { auth } from "firebase";
 import "firebase/firestore";
 import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 // This is the basic home screen
 
@@ -181,6 +183,7 @@ const HomeScreen = ({ navigation }) => {
                         maxToRenderPerBatch={10}
                         windowSize={6}
                         numColumns={3}
+						contentContainerStyle={{height: Dimensions.get('window').height * 0.3}}
                     />
 				</View>
 			} 
@@ -206,8 +209,9 @@ const HomeScreen = ({ navigation }) => {
 						initialNumToRender={10}
 						removeClippedSubviews={true}
 						maxToRenderPerBatch={10}
-						windowSize={6}
+						windowSize={3}
 						numColumns={3}
+						contentContainerStyle={{height: Dimensions.get('window').height * 0.3}}
 					/>
 					}
 
@@ -226,6 +230,30 @@ const HomeScreen = ({ navigation }) => {
 					<ActivityIndicator size='large' color='#2fcc76' />
 				</View>
 			}
+		</View>
+		{/* Navigation bar */}
+		<View style={{height: 60, position: 'absolute', bottom:0, right: 0, left: 0, flexDirection: 'row', justifyContent:'center', zIndex: 100}}>
+			<TouchableOpacity 
+			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
+			onPress={() => navigation.navigate('Home Screen')}
+			>
+			<MaterialCommunityIcons name="home" color={'black'} size={32} />
+			<Text  style={{color:'black'}}>Home</Text>
+			</TouchableOpacity>
+			<TouchableOpacity 
+			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
+			onPress={() => navigation.navigate('Label New Data')}
+			>
+			<FontAwesome5 name="clipboard-list" color={'white'} size={32} />
+			<Text  style={{color:'white'}}>Label Data</Text>
+			</TouchableOpacity>
+			<TouchableOpacity 
+			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
+			onPress={() => navigation.navigate('My Profile')}
+			>
+			<MaterialIcons name="contacts" color={'white'} size={32} />
+			<Text style={{color:'white'}}>My Profile</Text>
+			</TouchableOpacity>
 		</View>
 		</ImageBackground>
 	</View>
