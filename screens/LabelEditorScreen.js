@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Modal, Dimensions, FlatList, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Modal, Dimensions, FlatList, ScrollView, Alert } from "react-native";
 import Button from "../components/Button";
 import Svg, { Circle, Rect, SvgUri, Image, Polygon, Text as SVGText } from "react-native-svg";
 import { material } from 'react-native-typography'
@@ -18,6 +18,8 @@ const LabelEditorScreen = ({ route, navigation }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [savedLabels, setSavedLabels] = useState([]);
 	const [canEdit, setCanEdit] = useState(true)
+	const [wipComment, setWIPComment] = useState('')
+	const [comments, setComments] = useState([])
 
     const { imageURI, uriOnly } = route.params;
 	console.log(imageURI)
@@ -27,6 +29,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 			if (!uriOnly) {
 				setSavedLabels(imageURI.labels)
 				setCanEdit(imageURI.userOwned)
+				setComments(imageURI.comments)
 			}
 			return () => {
 				console.log("Focused Profile Screen");
@@ -37,14 +40,17 @@ const LabelEditorScreen = ({ route, navigation }) => {
 	// Upload the image to firebase then add the item to firestore	
 	const uploadToBackend = () => {
 		var userId = firebase.auth().currentUser.uid;
-
-		Promise.all( 
-			putStorageItem({uri: imageURI, firebaseURL: "Images/" + userId + "/" + imageURI.substring(imageURI.lastIndexOf('/') + 1 ) })
-			)
-		.then((url) => {
-			console.log('Test: ', url)
-		})
-
+		if (!uriOnly) {
+			updateStorageItem()
+		}
+		else {
+			Promise.all( 
+				putStorageItem({uri: imageURI, firebaseURL: "Images/" + userId + "/" + imageURI.substring(imageURI.lastIndexOf('/') + 1 ) })
+				)
+			.then((url) => {
+				console.log('Test: ', url)
+			})
+		}
 	}
 
     // Single upload to firebase storage
@@ -73,9 +79,52 @@ const LabelEditorScreen = ({ route, navigation }) => {
             return(item.firebaseURL)
             }).catch((error) => {
             console.log('One failed:', item, error.message)
-        });
-        
+        });   
     }
+
+	const updateStorageItem = () => {
+		var userId = firebase.auth().currentUser.uid;
+		firebase
+		.firestore()
+		.collection("users")
+		.doc(userId)
+		.collection('labeledImages')
+		.doc(imageURI.id)
+		.set({labels: savedLabels, image: imageURI.firebaseURL, comments: (comments != undefined) ? comments : ''})
+		.then(() => 
+		navigation.popToTop())
+	}
+
+	const deleteLabel = (item) => {
+		setPos([])
+		console.log(item)
+		Alert.alert('Delete this label?', 
+		'Delete this label? This will only take effect if you save after deleting in case you change your mind!',
+		[
+			{
+			  text: "Cancel",
+			  onPress: () => console.log("Cancel Pressed"),
+			  style: "cancel"
+			},
+			{ text: "OK", onPress: () => confirmDelete(item) }
+		  ],
+		  { cancelable: false })
+	}
+
+	const confirmDelete = (item) => {
+		let tempLabels = savedLabels
+		tempLabels = tempLabels.filter((newItem) => newItem != item)
+		setSavedLabels(tempLabels)
+	}
+
+	// TODO: FINISH THIS AND SYNC IT TO BACKEND
+	const sendComment = () => {
+		let comment = {text: wipComment, poster: firebase.auth().currentUser.uid}
+		if (comments != undefined && comments.length > 0)
+			setComments([ ...comments, comment])
+		else
+			setComments([comment])
+	}
 
 	const setLabelAndSave = (label) => {
 		let finalLabel = {
@@ -205,7 +254,6 @@ const LabelEditorScreen = ({ route, navigation }) => {
 		/>
 			{mode == 0 &&
 				<Rect 
-				onPress={(e) => {console.log('press', e.nativeEvent)}}
 				x={pos.length > 0 ? `${pos[0].x + layout.x}` : "0"} 
 				y={pos.length > 0 ? `${pos[0].y + layout.y}` : "0"} 
 				width={pos.length > 1 ? `${pos[1].x - pos[0].x}`  : "0"} 
@@ -226,6 +274,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 					return(
 						<View>
 					<Rect 
+					onLongPress={(e) => {console.log('Long press'); deleteLabel(value) }}
 					onPress={(e) => {console.log('press', e.nativeEvent)}}
 					x={`${value.pos[0].x + layout.x}`}
 					y={`${value.pos[0].y + layout.y}`} 
@@ -244,6 +293,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 					return (
 						<View>
 						<Polygon
+						onLongPress={(e) => {console.log('Long press'); deleteLabel(value) }}
 						points={getPoly(value.pos)}
 						fill="rgba(125, 125, 125, 0.25)"
 						stroke="red"
@@ -279,10 +329,40 @@ const LabelEditorScreen = ({ route, navigation }) => {
 		}
 		{ pos.length == 0 &&
 		<View style={{flexDirection:'row', width: '100%', justifyContent: 'space-around', marginTop: 10}}>
-			<Button onPress={() => uploadToBackend()} title='Upload!' iconName="check" />
+			{ uriOnly && <Button onPress={() => uploadToBackend()} title='Upload!' iconName="check" />}
+			{ !uriOnly && <Button onPress={() => uploadToBackend()} title='Save!' iconName="save" />}
 		</View>
 		}
 		</View>}
+		{ !uriOnly &&
+		<View style={{justifyContent: 'flex-start'}}>
+			<Text style={material.headline}>Comments:</Text>
+			<View style={styles.commentBox}>
+				{ comments != undefined &&  comments.length > 0 && comments.map(comment => {
+					console.log(comment)
+					return(
+						<View>
+							<Text>{comment.text}</Text>
+							<Text>By: {comment.poster == firebase.auth().currentUser.uid ? "You" : comment.poster}</Text>
+						</View>
+					)
+				})}
+				{comments == undefined &&
+				<Text style={material.subheading}>There are no comments on this! {"\n"}Be the first to leave one below:</Text>
+				}
+			</View>
+			<Input
+				label="Leave a comment:"
+				inputStyle={{ color: "black" }}
+				leftIcon={{
+					type: "MaterialIcons",
+					name: "edit",
+				}}
+				onChangeText={(text) => setWIPComment(text)}
+				onSubmitEditing={() => sendComment()}
+			/>
+			</View>
+		}
 	</ScrollView>
     </View>
 	);
@@ -336,6 +416,14 @@ const styles = StyleSheet.create({
 	scrollInner: {
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	commentBox: {
+		borderWidth: 0.5,
+		width: Dimensions.get('window').width * 0.9,
+		marginHorizontal: Dimensions.get('window').width * 0.05,
+		padding: 20,
+		borderRadius: 20,
+		borderColor: 'lightgrey'
 	}
 });
 

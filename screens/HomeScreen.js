@@ -246,13 +246,16 @@ const styles = StyleSheet.create({
 		width: Dimensions.get('window').width * 0.25, 
 		height: Dimensions.get('window').width * 0.25,
 		marginHorizontal: '4%',
-		marginVertical: '2.5%'
+		marginVertical: '2.5%',
+		elevation: 5,
+		zIndex: 1
 	},
 	renderItemImage: {
 		backgroundColor: 'rgba(125, 125, 125, 0.5)', 
 		width: '100%', 
 		aspectRatio: 1,
-		borderRadius: 20
+		borderRadius: 20,
+
 	}
 });
 
