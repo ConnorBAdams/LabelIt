@@ -57,7 +57,10 @@ const HomeScreen = ({ navigation }) => {
 						console.log('No need to grab again')
 						return
 					}
-
+					else if (snapshot.size == 0) {
+						setUserUploads(-1)
+						return
+					}
 					console.log('Target: ', target)
 					snapshot.forEach((doc) => {
 						console.log(doc.id, doc.data())
@@ -172,19 +175,25 @@ const HomeScreen = ({ navigation }) => {
 		<ImageBackground style={styles.bgimage} source={require('../assets/bgTest.png')}>
 		<View style={styles.userDataContainer}>
 		<Text style={[material.headline, {marginLeft: 10, marginBottom: 30}]}>Your Labeled Data:</Text>
-			{ (userData != null && userUploads != null) &&
+			{ (userData != null && userUploads != null) &&			
 				<View>
-					<FlatList
-                        data={userUploads}
-                        renderItem={_renderItem}
-                        keyExtractor={(item) => item.id}
-                        initialNumToRender={10}
-                        removeClippedSubviews={true}
-                        maxToRenderPerBatch={10}
-                        windowSize={6}
-                        numColumns={3}
+					{userUploads == -1 &&
+					<Text style={[material.headline, {marginHorizontal: 20}]}>You haven't uploaded anyting yet!</Text>
+					}
+					{ userUploads != -1 &&
+						<FlatList
+						data={userUploads}
+						renderItem={_renderItem}
+						keyExtractor={(item) => item.id}
+						initialNumToRender={10}
+						removeClippedSubviews={true}
+						maxToRenderPerBatch={10}
+						windowSize={6}
+						numColumns={3}
 						contentContainerStyle={{height: Dimensions.get('window').height * 0.3}}
-                    />
+					/>
+					}
+
 				</View>
 			} 
 			{  (userData == null || userUploads == null) &&
@@ -232,7 +241,7 @@ const HomeScreen = ({ navigation }) => {
 			}
 		</View>
 		{/* Navigation bar */}
-		<View style={{height: 60, position: 'absolute', bottom:0, right: 0, left: 0, flexDirection: 'row', justifyContent:'center', zIndex: 100}}>
+		<View style={{height: 60, position: 'absolute', bottom:0, right: 0, left: 0, borderColor:'white', borderWidth:1 , borderTopEndRadius: 20, borderTopLeftRadius: 20, flexDirection: 'row', justifyContent:'center', zIndex: 100}}>
 			<TouchableOpacity 
 			style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
 			onPress={() => navigation.navigate('Home Screen')}

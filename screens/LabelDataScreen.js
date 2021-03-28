@@ -60,7 +60,7 @@ const LabelDataScreen = ({ route, navigation }) => {
 			</View>
 		</View>
 	{/* Navigation bar */}
-	<View style={{height: 60, position: 'absolute', bottom:0, right: 0, left: 0, flexDirection: 'row', justifyContent:'center', zIndex: 100}}>
+	<View style={{height: 60, position: 'absolute', bottom:0, right: 0, left: 0, borderColor:'white', borderWidth:1 , borderTopEndRadius: 20, borderTopLeftRadius: 20, flexDirection: 'row', justifyContent:'center', zIndex: 100}}>
 		<TouchableOpacity 
 		style={{width: Dimensions.get('window').width * 0.33, alignItems: 'center', justifyContent:'center', height: 60,}}
 		onPress={() => navigation.navigate('Home Screen')}

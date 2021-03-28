@@ -173,7 +173,19 @@ const LabelNavigator = () => {
     return (
         <LabelStack.Navigator>
             <LabelStack.Screen name="Home" options={{headerShown: false}} component={LabelDataScreen} />
-            <LabelStack.Screen name="LabelEditor" options={{title:"Label Editor"}} component={LabelEditorScreen} />
+            <LabelStack.Screen name="LabelEditor" 
+            options={{title:"Label Editor",
+            headerStyle: {backgroundColor: 'transparent', elevation: 0 },
+            headerTransparent: {
+                position: 'absolute',
+                backgroundColor: 'transparent',
+                zIndex: 100,
+                top: 0,
+                left: 0,
+                right: 0
+              }
+            }}  
+            component={LabelEditorScreen} />
             <LabelStack.Screen name="PictureScreen" options={{title:"Take Picture"}} component={PictureScreen} />
         </LabelStack.Navigator>
     );

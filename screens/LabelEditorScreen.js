@@ -378,12 +378,13 @@ const styles = StyleSheet.create({
     },
 	mainBox:{
 		width: '100%', 
-		height: '70%', 
+		height: '65%', 
+		paddingVertical: 5,
 		backgroundColor:'white', 
 		elevation: 5, 
 		borderWidth: 1, 
 		borderRadius: 20, 
-		marginTop: 20, 
+		marginTop: 50, 
 		marginBottom: 0
 	},
 	centeredView: {
