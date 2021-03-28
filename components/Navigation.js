@@ -123,6 +123,7 @@ const HomeNavigator = () => {
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen name="Home" options={{headerShown: false}} component={HomeScreen} />
+            <HomeStack.Screen name="LabelEditor" options={{title:"Label Editor"}} component={LabelEditorScreen} />
         </HomeStack.Navigator>
     );
 };

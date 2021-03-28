@@ -17,7 +17,7 @@ const LabelEditorScreen = ({ route, navigation }) => {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [savedLabels, setSavedLabels] = useState([]);
 
-    const { imageURI } = route.params;
+    const { imageURI, uriOnly } = route.params;
 	console.log(imageURI)
 
 	// Upload the image to firebase then add the item to firestore	
